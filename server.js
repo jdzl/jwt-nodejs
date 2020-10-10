@@ -4,13 +4,15 @@ const cors = require('cors')
 const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const bodyParser = require('body-parser')
+const logger = require('morgan');
+const { inspections2, survey } = require('./dataMock')
+const auth = require('./auth').auth
 
 const app = express()
 const PORT = process.env.PORT || 8000
-const auth  = require('./auth').auth
 
 // PRIVATE and PUBLIC key
-var privateKEY = fs.readFileSync('./keys/private.key', 'utf8');
+let privateKEY = fs.readFileSync('./keys/private.key', 'utf8');
 
 
 const i = 'JDZL';          // Issuer 
@@ -21,29 +23,46 @@ const signOptions = {
     issuer: i,
     // subject: s,
     // audience: a,
-    expiresIn: "12h",
+    expiresIn: "30s",
+    // expiresIn: "12h",
     algorithm: "RS256"
 };
-var verifyOptions = {
+let verifyOptions = {
     ...signOptions,
     algorithm: [signOptions.algorithm]
 };
+app.use(logger('dev'))
 app.use(cors())
 app.use(bodyParser.urlencoded({ // Middleware
     extended: true
 }));
-app.use(bodyParser.json( ))
-app.get('/token', (req, res) => {
+app.use(bodyParser.json())
+app.post('/login', (req, res) => {
 
     const { user } = req.body
     console.log(req.body)
     const token = jwt.sign({ user }, privateKEY, signOptions);
-    res.json(token)
+    res.json({ token, id: user === 'zlda' ? 1 : 2 })
 })
-app.get('/echo',auth, (req, res) => {
+app.get('/echo', auth, (req, res) => {
 
     console.log(req.headers['authorization'])
-   
-    res.json({legit:req.userId})
+
+    res.json({ legit: req.userId })
 })
+app.get('/users/:userId/inspections', auth, (req, res) => {
+
+    console.log(req.params.userId, "req.params.userId")
+    res.json({
+        response: inspections2(req.params.userId)
+    })
+})
+app.get('/survey/:id', auth, (req, res) => {
+
+    console.log(req.params.id, "req.params.id")
+
+    res.json(survey(req.params.id))
+})
+app.get('/', (req, res) => res.json({ res: 'API users working...' }))
+
 const server = app.listen(PORT, () => console.log(`Server running  on port: ${server.address().port}`))
