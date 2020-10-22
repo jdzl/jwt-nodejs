@@ -9,7 +9,7 @@ const { inspections2, survey } = require('./dataMock')
 const auth = require('./auth').auth
 
 const app = express()
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 5000
 
 // PRIVATE and PUBLIC key
 let privateKEY = fs.readFileSync('./keys/private.key', 'utf8');
