@@ -23,7 +23,7 @@ const signOptions = {
     issuer: i,
     // subject: s,
     // audience: a,
-    expiresIn: "30s",
+    expiresIn: "1h",
     // expiresIn: "12h",
     algorithm: "RS256"
 };
