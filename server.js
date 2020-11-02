@@ -5,7 +5,7 @@ const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const bodyParser = require('body-parser')
 const logger = require('morgan');
-const { inspections2, survey } = require('./dataMock')
+const { inspections, survey  } = require('./dataMock')
 const auth = require('./auth').auth
 
 const app = express()
@@ -23,8 +23,8 @@ const signOptions = {
     issuer: i,
     // subject: s,
     // audience: a,
-    expiresIn: "1h",
-    // expiresIn: "12h",
+    // expiresIn: "3s",
+    expiresIn: "12h",
     algorithm: "RS256"
 };
 let verifyOptions = {
@@ -54,7 +54,7 @@ app.get('/users/:userId/inspections', auth, (req, res) => {
 
     console.log(req.params.userId, "req.params.userId")
     res.json({
-        response: inspections2(req.params.userId)
+        response: inspections(req.params.userId)
     })
 })
 app.get('/survey/:id', auth, (req, res) => {
