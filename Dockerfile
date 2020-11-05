@@ -10,6 +10,6 @@ RUN npm install
 
 COPY . /usr/src/app
 
-ENV PORT 8000
+ENV PORT 5000
 EXPOSE $PORT
 CMD [ "node", "server" ]
