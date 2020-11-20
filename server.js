@@ -50,11 +50,20 @@ app.get('/echo', auth, (req, res) => {
 
     res.json({ legit: req.userId })
 })
-app.get('/users/:userId/inspections', auth, (req, res) => {
+app.get('/users/:userId/inspections',  (req, res) => {
 
     console.log(req.params.userId, "req.params.userId")
     res.json({
-        response: inspections(req.params.userId)
+        response: inspections(req.params.userId),
+        // response1: inspections(req.params.userId),
+        // response2: inspections(req.params.userId),
+        // response3: inspections(req.params.userId),
+        // response4: inspections(req.params.userId),
+        // response5: inspections(req.params.userId),
+        // response6: inspections(req.params.userId),
+        // response7: inspections(req.params.userId),
+        // response8: inspections(req.params.userId),
+        // response9: inspections(req.params.userId),
     })
 })
 app.get('/survey/:id', auth, (req, res) => {
